@@ -15,7 +15,7 @@
             </div>
 
             <div id="vuedata">
-                <test-component></test-component>
+                <vuedata-component></vuedata-component>
             </div>
 
             <script src="{{ mix('js/app.js') }}"></script>

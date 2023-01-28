@@ -28,6 +28,9 @@
                         </div>
                     @endif
 
+            <div id="vuedata">
+                <vuedata-component></vuedata-component>
+            </div>
                 <!-- contentvue -->
                 </div>
             </div>
