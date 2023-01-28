@@ -1,9 +1,11 @@
 <template>
-        <!-- ↓app.blade.phpのコードが取得されてしまう。 -->
+<!-- ↓app.blade.phpのコードが取得されてしまう。 -->
+<!-- 上記問題解決.2023/01/27 -->
         <ul v-for="list in lists">
-            <li>{{ list.content }}</li>
+          <a :href="'/edit?id=' + list.id">
+            <li>{{ list.title }}</li>
+          </a>
         </ul>
-        <div>test</div>
 </template>
 
 <script>
@@ -12,7 +14,7 @@ const url = "/top"
 export default {
   props: ["lists_doing"],
   mounted() {
-    console.log('listdoing');
+    console.log('lists_doing');
   },
 
   data() {
@@ -23,12 +25,11 @@ export default {
 
   created() {
     this.DblistsGet();
-    console.log('testtest');
   },
 
   methods: {
     async DblistsGet() {
-      const res = await axios.get("/top");
+      const res = await axios.get("/lists");
       this.lists = res.data;
       console.log(this.lists);
     }
