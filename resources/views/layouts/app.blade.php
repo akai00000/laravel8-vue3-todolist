@@ -82,6 +82,7 @@
             <ul class="list-group list-group-horizontal" style = "background-color: gray-300;">
                 <li class="list-group-item"><a href = "/create">新規作成</a></li>
                 <li class="list-group-item"><a href = "/edit">タスクの編集</a></li>
+                <li class="list-group-item"><a href = "/done">完了タスク</a></li>
             </ul>
             </div>
         </div>
