@@ -16,7 +16,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    タスクの削除
+                    タスクの完了
                 </div>
                 <div class="card-body">
                     @if(count($errors) > 0)
@@ -73,7 +73,7 @@
                             <input name="deadline" type="date" value = "{{ $list_query_select['deadline'] }}">
                         </div>
                         <!-- 送信ボタン -->
-                        <button type='submit' class="btn btn-primary btn-lg">削除</button>
+                        <button type='submit' class="btn btn-primary btn-lg">完了</button>
                     </form>
                 </div>
             </div>

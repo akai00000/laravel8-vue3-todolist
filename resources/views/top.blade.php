@@ -8,10 +8,8 @@
             <div class="card">
                 <div class="card-header">ラベル一覧</div>
                 <div class="card-body">
-                    <div class="rabel-block">
-                        <div class="d-flex flex-column">
-                <!-- rabelvue -->
-                        </div>
+                    <div id="rabellink">
+                        <rabel-link-component></rabel-link-component>
                     </div>
                 </div>
             </div>
@@ -27,11 +25,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-            <div id="vuedata">
-                <vuedata-component></vuedata-component>
-            </div>
-                <!-- contentvue -->
+                    <div id="contentlink">
+                        <content-link-component></content-link-component>
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,16 +37,12 @@
                 <div class="card-header">タイトル</div>
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
                     @endif
-                    <div class="title-block">
-                        <div class="d-flex flex-column">
-                            <div id="titledoing">
-                                <titledoing-component></titledoing-component>
-                            </div>
-                        </div>
+                    <div id="titlelink">
+                        <title-link-component></title-link-component>
                     </div>
                 </div>
             </div>
@@ -58,7 +50,6 @@
 
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
 
 <!-- ↓containerdiv -->
 </div>

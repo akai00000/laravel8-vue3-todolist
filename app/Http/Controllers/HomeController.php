@@ -26,25 +26,29 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $user = Auth::user();
-        $user_id = $user['id'];
-        $lists_doing = Todo::where('user_id', $user_id)->where('status', 1)->get();
-        $titles = Todo::select('title')->where('user_id', $user_id)->get();
-        // dd($titles);
-        return view('top', compact('lists_doing'));
-    }
 
-
+    //  topページ表示
     public function top()
     {
-        $user = Auth::user();
-        $user_id = $user['id'];
-        $lists_doing = Todo::where('user_id', $user_id)->where('status', 1)->get();
-        return $lists_doing;
+        return view('top');
     }
 
+
+    public function topAxios()
+    {
+        $user = Auth::user();
+        $user_id = $user['id'];
+        $todos_sts_1 = Todo::where('user_id', $user_id)->where('status', 1)->get();
+        return $todos_sts_1;
+    }
+
+    public function contentAxios()
+    {
+        $user = Auth::user();
+        $user_id = $user['id'];
+        $todos_sts_2 = Todo::where('user_id', $user_id)->where('status', 1)->get();
+        return $todos_sts_2;
+    }
 
     public function create()
     {
@@ -89,11 +93,12 @@ class HomeController extends Controller
         $user = Auth::user();
         $user_id = $user['id'];
         $list_id = $request->id;
+        $list_id_def = ToDo::where('user_id', $user_id)->where('status', 1)->get();
         $rabels = Rabel::where('user_id', $user_id)->where('rabel_content')->get();
         $list = Todo::find($list_id);
         $titles = Todo::where('user_id', $user_id)->where('title')->get();
         // dd($list);
-        return view('edit', compact('user_id', 'rabels', 'titles', 'list', 'list_id'));
+        return view('edit', compact('user_id', 'rabels', 'titles', 'list', 'list_id', 'list_id_def'));
     }
 
     public function update(Request $request)
@@ -110,7 +115,7 @@ class HomeController extends Controller
         return redirect('/top');
     }
 
-public function del(Request $request)
+public function done(Request $request)
 {
     // //ここでは、①特定のレコードをクエリビルダに記述されたidを用いてDBのテーブルからレコードを取得
     // //②そして、取得した情報をdelのviewに渡して表示させる。
@@ -124,7 +129,7 @@ public function del(Request $request)
     // DBからクエリビルダに記述したidに対応するlistのレコードを取得してくる。
     $list_query_select = Todo::where('user_id', $user_id)->where('id', $list_id)->first();
     // dd($list_query_select);
-    return view('del', compact('user_id', 'rabels', 'list_id', 'list_query_select'));
+    return view('done', compact('user_id', 'rabels', 'list_id', 'list_query_select'));
 }
 
 public function remove(Request $request)
