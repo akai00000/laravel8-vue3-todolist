@@ -34,21 +34,22 @@ class HomeController extends Controller
     }
 
 
-    public function topAxios()
+    public function axiosGetTodos()
     {
         $user = Auth::user();
         $user_id = $user['id'];
         $todos_sts_1 = Todo::where('user_id', $user_id)->where('status', 1)->get();
         return $todos_sts_1;
     }
-
-    public function contentAxios()
+    
+    public function axiosGetRabels()
     {
         $user = Auth::user();
         $user_id = $user['id'];
-        $todos_sts_2 = Todo::where('user_id', $user_id)->where('status', 1)->get();
-        return $todos_sts_2;
+        $rabels_sts_1 = Rabel::where('user_id', $user_id)->where('status', 1)->get();
+        return $rabels_sts_1;
     }
+
 
     public function create()
     {
@@ -84,7 +85,7 @@ class HomeController extends Controller
             'deadline' => $data['deadline'], 
             'content' => $data['content'], 
             ])->save();
-        return redirect()->route('index')->with('success', 'タスクを追加しました。');
+        return redirect()->route('top')->with('success', 'タスクを追加しました。');
     }
 
 
@@ -93,12 +94,11 @@ class HomeController extends Controller
         $user = Auth::user();
         $user_id = $user['id'];
         $list_id = $request->id;
-        $list_id_def = ToDo::where('user_id', $user_id)->where('status', 1)->get();
+        // $list_id_def = ToDo::where('user_id', $user_id)->where('status', 1)->get();
         $rabels = Rabel::where('user_id', $user_id)->where('rabel_content')->get();
         $list = Todo::find($list_id);
         $titles = Todo::where('user_id', $user_id)->where('title')->get();
-        // dd($list);
-        return view('edit', compact('user_id', 'rabels', 'titles', 'list', 'list_id', 'list_id_def'));
+        return view('edit', compact('user_id', 'rabels', 'titles', 'list', 'list_id'));
     }
 
     public function update(Request $request)

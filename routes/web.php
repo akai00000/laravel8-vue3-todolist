@@ -22,10 +22,6 @@ Auth::routes();
 
 // topview表示
 Route::get('/top', [App\Http\Controllers\HomeController::class, 'top'])->name('top');
-// titleaxiosデータ取得
-Route::get('/todos', [App\Http\Controllers\HomeController::class, 'topAxios'])->name('topAxios');
-// contentaxiosデータ取得
-Route::get('/todosC', [App\Http\Controllers\HomeController::class, 'contentAxios'])->name('contentAxios');
 // 新規作成ページ表示
 Route::get('/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
 // 新規作成メソッド実行
@@ -38,9 +34,8 @@ Route::post('/update', [App\Http\Controllers\HomeController::class, 'update'])->
 Route::get('/done', [App\Http\Controllers\HomeController::class, 'done'])->name('done');
 // 削除実行status → 1から2へ変更（物理消去）
 Route::post('/del', [App\Http\Controllers\HomeController::class, 'remove'])->name('remove');
-// 削除タスク（完了タスク）の表示
 
-// 削除タスクの復帰（物理復帰status２から１へ）
-
-//vue_test(税込価格表示)
-Route::get('/top2', [App\Http\Controllers\HomeController::class, 'vueDataGet'])->name('vueDataGet');
+// axiosTodosデータ取得
+Route::get('/todos', [App\Http\Controllers\HomeController::class, 'axiosGetTodos'])->name('axiosGetTodos');
+// axiosRabelsデータ取得
+Route::get('/rabels', [App\Http\Controllers\HomeController::class, 'axiosGetRabels'])->name('axiosGetRabels');
