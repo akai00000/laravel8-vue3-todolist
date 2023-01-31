@@ -1,9 +1,16 @@
 <template>
-    <ul v-for="todo in todos" v-bind:key="todos.id">
-      <a :href="'/edit?id=' + todo.id">
-        <li>{{ todo.title }}</li>
-      </a>
-    </ul>
+<div class="col-md-4">
+  <div class="card">
+      <div class="card-header">タイトル</div>
+      <div class="card-body">
+          <ul v-for="todo in todosT" v-bind:key="todosT.id">
+            <a :href="'/edit?id=' + todo.id">
+              <li>{{ todo.title }}</li>
+            </a>
+          </ul>
+      </div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -11,7 +18,7 @@ const url = "/top"
 export default {
   data() {
     return {
-      todos: "",
+      todosT: "",
     };
   },
   created() {
@@ -20,7 +27,7 @@ export default {
   methods: {
     async DblistsGet() {
       const res = await axios.get("/todos");
-      this.todos = res.data;
+      this.todosT = res.data;
     }
   },
 };
