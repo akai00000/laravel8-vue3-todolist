@@ -1,16 +1,14 @@
 <template>
-  <div class="col-md-2">
     <div class="card">
         <div class="card-header">ラベル一覧</div>
         <div class="card-body">
           <ul v-for="todo in todos" v-bind:key="todos.id">
-            <a :href="'/edit?id=' + todo.id">
-              <li>{{ todo.rabel_content }}</li>
+            <a :href="'/byRabel?id=' + todo.rabel_id">
+              {{ todo.rabel_content }}
             </a>
           </ul>
         </div>
     </div>
-  </div>
 </template>
 
 <script>

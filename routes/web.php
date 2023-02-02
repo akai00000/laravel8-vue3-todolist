@@ -22,6 +22,10 @@ Auth::routes();
 
 // topview表示
 Route::get('/top', [App\Http\Controllers\HomeController::class, 'top'])->name('top');
+// rabelview表示
+Route::get('/byRabel', [App\Http\Controllers\HomeController::class, 'byRabel'])->name('byRabel');
+// 税込サンプル表示
+Route::get('/top2', [App\Http\Controllers\HomeController::class, 'top2'])->name('top2');
 // 新規作成ページ表示
 Route::get('/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
 // 新規作成メソッド実行

@@ -34,12 +34,37 @@ class HomeController extends Controller
     }
 
 
+    // top2税込表示サンプル
+    public function top2()
+    {
+        return view('top2');
+    }
+
+    // rabel一覧表示
+    public function byRabel(Request $request)
+    {
+        $user = Auth::user();
+        $user_id = $user['id'];
+        $req_rabel_id = $request->id;
+        $title_with_rabel = Todo::select('title')
+            ->where('user_id', $user_id)
+            ->where('rabel_id', $req_rabel_id)
+            ->where('status', 1)
+            ->get();
+        $todos_with_rabel = Todo::where('user_id', $user_id)
+            ->where('rabel_id', $req_rabel_id)
+            ->where('status', 1)
+            ->get();
+        return view('byRabel', compact('title_with_rabel'));
+    }
+
     public function axiosGetTodos()
     {
         $user = Auth::user();
         $user_id = $user['id'];
         $todos_sts_1 = Todo::where('user_id', $user_id)->where('status', 1)->get();
-        return $todos_sts_1;
+        $todos_sts_1_dead = Todo::where('user_id', $user_id)->where('status', 1)->orderBy('deadline', 'asc')->first();
+        return [$todos_sts_1, $todos_sts_1_dead];
     }
     
     public function axiosGetRabels()
@@ -115,55 +140,46 @@ class HomeController extends Controller
         return redirect('/top');
     }
 
-public function done(Request $request)
-{
-    // //ここでは、①特定のレコードをクエリビルダに記述されたidを用いてDBのテーブルからレコードを取得
-    // //②そして、取得した情報をdelのviewに渡して表示させる。
-    // //③必要なことはテーブルからタイトル名、ラベル名、優先度、内容、締切を持ってきて表示させること
-    $user = Auth::user();
-    $user_id = $user['id'];
-    // ↓rabelsはラベル一覧のブロックに表示するために使用する。
-    $rabels = Rabel::where('user_id', $user_id)->get();
-    // ↓クエリビルダより、検索したいlistのidを取得する。
-    $list_id = $request->id;
-    // DBからクエリビルダに記述したidに対応するlistのレコードを取得してくる。
-    $list_query_select = Todo::where('user_id', $user_id)->where('id', $list_id)->first();
-    // dd($list_query_select);
-    return view('done', compact('user_id', 'rabels', 'list_id', 'list_query_select'));
-}
-
-public function remove(Request $request)
-{
-    /* ↓ 消去するlistに対応するラベルのうち、他と同じものがあるかを確認する。
-    （重複があれば、ラベルはまだ消してはいけないため、一部の処理をパスするようにする）
-    */
-    $user = Auth::user();
-    $user_id = $user['id'];
-    // ↓inputに記載された情報をrequestallで取得する。
-    $list_data = $request->all();
-    unset($list_data['_token']);
-    // ↓リストモデルのなかで、delから取得したレコードと一致するものを検索し、ステータスを2にすることで、論理削除する。
-    Todo::where('user_id', $user_id)->where('id', $list_data['list_id'])->update(['status' => 2]);
-
-    /* ↓rabelsテーブルのrabel_idを消して良いかの判定
-        ユーザーが入力したidに対応するレコードのラベルが他にもあるか確認。 → カウントしてrabel_id_countに格納。
-    */
-    $rabel_id_counts = Todo::where('user_id', $user_id)->where('rabel_id', '=', $list_data['rabel_id'])->where('status', 1)->count();
-    // ↓クエリビルダのidと一致するrabelはいくつあるかカウントする。
-    if($rabel_id_counts == 0)
+    public function done(Request $request)
     {
-        Rabel::where('rabel_id', $list_data['rabel_id'])->update(['status' => 2]);
+        // //ここでは、①特定のレコードをクエリビルダに記述されたidを用いてDBのテーブルからレコードを取得
+        // //②そして、取得した情報をdelのviewに渡して表示させる。
+        // //③必要なことはテーブルからタイトル名、ラベル名、優先度、内容、締切を持ってきて表示させること
+        $user = Auth::user();
+        $user_id = $user['id'];
+        // ↓rabelsはラベル一覧のブロックに表示するために使用する。
+        $rabels = Rabel::where('user_id', $user_id)->get();
+        // ↓クエリビルダより、検索したいlistのidを取得する。
+        $list_id = $request->id;
+        // DBからクエリビルダに記述したidに対応するlistのレコードを取得してくる。
+        $list_query_select = Todo::where('user_id', $user_id)->where('id', $list_id)->first();
+        // dd($list_query_select);
+        return view('done', compact('user_id', 'rabels', 'list_id', 'list_query_select'));
     }
-    return redirect('/top');
-}
 
-// vueにDBのデータを渡すためのメソッド
-public function vueDataGet(){
-    $user = Auth::user();
-    $user_id = $user['id'];
-    $list_contents= Todo::select('content')->where('user_id', $user_id)->where('status', 1)->get();
-    $user = DB::select('select id from Todos where rabel = "test_rabel"');
-    return view('/top2', compact('user', 'list_contents'));
-}
+    public function remove(Request $request)
+    {
+        /* ↓ 消去するlistに対応するラベルのうち、他と同じものがあるかを確認する。
+        （重複があれば、ラベルはまだ消してはいけないため、一部の処理をパスするようにする）
+        */
+        $user = Auth::user();
+        $user_id = $user['id'];
+        // ↓inputに記載された情報をrequestallで取得する。
+        $list_data = $request->all();
+        unset($list_data['_token']);
+        // ↓リストモデルのなかで、delから取得したレコードと一致するものを検索し、ステータスを2にすることで、論理削除する。
+        Todo::where('user_id', $user_id)->where('id', $list_data['list_id'])->update(['status' => 2]);
+
+        /* ↓rabelsテーブルのrabel_idを消して良いかの判定
+            ユーザーが入力したidに対応するレコードのラベルが他にもあるか確認。 → カウントしてrabel_id_countに格納。
+        */
+        $rabel_id_counts = Todo::where('user_id', $user_id)->where('rabel_id', '=', $list_data['rabel_id'])->where('status', 1)->count();
+        // ↓クエリビルダのidと一致するrabelはいくつあるかカウントする。
+        if($rabel_id_counts == 0)
+        {
+            Rabel::where('rabel_id', $list_data['rabel_id'])->update(['status' => 2]);
+        }
+        return redirect('/top');
+    }
 
 }
