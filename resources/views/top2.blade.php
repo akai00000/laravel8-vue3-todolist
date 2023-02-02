@@ -12,6 +12,9 @@
                 <div class="card-body">
                   vue表示サンプル
                 </div>
+                <div id="taxPrice">
+                    <taxprice-link-component></taxprice-link-component>
+                </div>
             </div>
 
         </div>
