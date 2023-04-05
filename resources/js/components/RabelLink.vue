@@ -3,7 +3,7 @@
         <div class="card-header">ラベル一覧</div>
         <div class="card-body">
           <ul v-for="todo in todos" v-bind:key="todos.id">
-            <a :href="'/byRabel?id=' + todo.rabel_id">
+            <a>
               {{ todo.rabel_content }}
             </a>
           </ul>

@@ -66,7 +66,6 @@ export default {
       const radioButton1 = document.getElementById("inlineRadio1")
       const radioButton2 = document.getElementById("inlineRadio2")
       const radioButton3 = document.getElementById("inlineRadio3")
-      console.log(this.todos.priority);
       if(this.todos.priority == 1)
       {
         radioButton1.checked = true;
